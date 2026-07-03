@@ -6,12 +6,8 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.zzazo.domain.user.dto.request.EmailVerificationConfirmRequestDto;
-import org.example.zzazo.domain.user.dto.request.EmailVerificationSendRequestDto;
-import org.example.zzazo.domain.user.dto.request.LoginRequestDto;
-import org.example.zzazo.domain.user.dto.request.SignUpRequestDto;
-import org.example.zzazo.domain.user.dto.response.LoginResponseDto;
-import org.example.zzazo.domain.user.dto.response.SignUpResponseDto;
+import org.example.zzazo.domain.user.dto.UserRequest;
+import org.example.zzazo.domain.user.dto.UserResponse;
 import org.example.zzazo.global.common.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
@@ -70,7 +66,7 @@ public interface AuthControllerDocs {
                             """))
             )
     })
-    ResponseEntity<ApiResponse<Void>> sendEmailVerification(EmailVerificationSendRequestDto request);
+    ResponseEntity<ApiResponse<Void>> sendEmailVerification(UserRequest.EmailVerificationSendRequest request);
 
     @Operation(
             summary = "이메일 인증번호 확인 (회원가입 2단계)",
@@ -117,7 +113,7 @@ public interface AuthControllerDocs {
                             """))
             )
     })
-    ResponseEntity<ApiResponse<Void>> verifyEmailCode(EmailVerificationConfirmRequestDto request);
+    ResponseEntity<ApiResponse<Void>> verifyEmailCode(UserRequest.EmailVerificationConfirmRequest request);
 
     @Operation(
             summary = "회원가입 (회원가입 3단계)",
@@ -200,7 +196,7 @@ public interface AuthControllerDocs {
                             """))
             )
     })
-    ResponseEntity<ApiResponse<SignUpResponseDto>> signUp(SignUpRequestDto request);
+    ResponseEntity<ApiResponse<UserResponse.SignUpResponse>> signUp(UserRequest.SignUpRequest request);
 
     @Operation(
             summary = "로그인",
@@ -261,7 +257,7 @@ public interface AuthControllerDocs {
                             """))
             )
     })
-    ResponseEntity<ApiResponse<LoginResponseDto>> login(LoginRequestDto request);
+    ResponseEntity<ApiResponse<UserResponse.LoginResponse>> login(UserRequest.LoginRequest request);
 
     @Operation(
             summary = "로그아웃",

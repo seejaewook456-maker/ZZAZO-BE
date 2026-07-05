@@ -35,7 +35,7 @@ public interface LectureControllerDocs {
                     description = "과목목록 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = LectureResponse.LectureListResponse.class),
+                            schema = @Schema(implementation = LectureResponse.LectureList.class),
                             examples = @ExampleObject(value = """
                             {
                               "isSuccess": true,
@@ -46,18 +46,18 @@ public interface LectureControllerDocs {
                                   {
                                     "lectureId": 1,
                                     "lectureName": "경영학원론",
-                                    "classification": "전공필수",
+                                    "lectureClassification": "전공필수",
                                     "credit": 3,
-                                    "times": [
+                                    "lectureTime": [
                                       {
                                         "startTime": "10:30",
                                         "endTime": "11:45",
-                                        "week": "MON"
+                                        "dayOfWeek": "MON"
                                       },
                                       {
                                         "startTime": "10:30",
                                         "endTime": "11:45",
-                                        "week": "WED"
+                                        "dayOfWeek": "WED"
                                       }
                                     ]
                                   }
@@ -110,7 +110,7 @@ public interface LectureControllerDocs {
                             """))
             )
     })
-    ApiResponse<LectureResponse.LectureListResponse> getMajorList(
+    ApiResponse<LectureResponse.LectureList> getMajorList(
             @Parameter(
                 description = "사용자가 조회하고자 하는 전공 과목목록의 학과 id 입니다.",
                 example = "1",
@@ -148,7 +148,7 @@ public interface LectureControllerDocs {
                     description = "과목목록 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = LectureResponse.LectureListResponse.class),
+                            schema = @Schema(implementation = LectureResponse.LectureList.class),
                             examples = @ExampleObject(value = """
                             {
                               "isSuccess": true,
@@ -159,13 +159,13 @@ public interface LectureControllerDocs {
                                   {
                                     "lectureId": 101,
                                     "lectureName": "College English2",
-                                    "classification": "교양필수",
+                                    "lectureClassification": "교양필수",
                                     "credit": 2,
-                                    "times": [
+                                    "lectureTime": [
                                       {
                                         "startTime": "09:00",
                                         "endTime": "11:00",
-                                        "week": "MON"
+                                        "dayOfWeek": "MON"
                                       }
                                     ]
                                   }
@@ -221,7 +221,7 @@ public interface LectureControllerDocs {
                     )
             )
     })
-    ApiResponse<LectureResponse.LectureListResponse> getLiberalList(
+    ApiResponse<LectureResponse.LectureList> getLiberalList(
             @Parameter(
                     description = """
                             사용자가 조회하고자 하는 교양 과목의 세부 영역입니다.

@@ -66,7 +66,7 @@ public class RecommendRequest {
                     description = "사용자가 선택한 시간표에 포함할 강의 ID 목록",
                     example = "[13, 16, 17]"
             )
-            List<Long> selectedCourseIds
+            List<Long> selectedLectureIds
             ) {
 
     }

@@ -17,7 +17,7 @@ public class LectureController implements LectureControllerDocs {
 
     @Override
     @GetMapping("/major")
-    public ApiResponse<LectureResponse.LectureListResponse> getMajorList(
+    public ApiResponse<LectureResponse.LectureList> getMajorList(
             @RequestParam Long departmentId,
             @RequestParam int semester
     ) {
@@ -26,7 +26,7 @@ public class LectureController implements LectureControllerDocs {
 
     @Override
     @GetMapping("/liberal")
-    public ApiResponse<LectureResponse.LectureListResponse> getLiberalList(
+    public ApiResponse<LectureResponse.LectureList> getLiberalList(
             @RequestParam LiberalCategory liberalCategory,
             @RequestParam int semester
     ) {

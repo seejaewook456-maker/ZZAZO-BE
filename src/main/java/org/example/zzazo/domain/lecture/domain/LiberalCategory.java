@@ -1,9 +1,6 @@
 package org.example.zzazo.domain.lecture.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.RequiredArgsConstructor;
-
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public enum LiberalCategory {

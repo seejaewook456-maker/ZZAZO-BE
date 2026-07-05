@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.zzazo.domain.lecture.dto.LectureResponse;
 import org.example.zzazo.domain.recommend.dto.RecommendRequest;
 import org.example.zzazo.domain.recommend.dto.RecommendResponse;
 import org.example.zzazo.global.common.ApiResponse;
@@ -38,7 +37,7 @@ public interface RecommendControllerDocs {
                       "semester": 2,
                       "preferredFreeDays": [],
                       "targetCredits": 18,
-                      "selectedCourseIds": [13,17]
+                      "selectedLectureIds": [13,17]
                     }
                     """))
     )
@@ -57,20 +56,20 @@ public interface RecommendControllerDocs {
                               "data": {
                                 "totalCredits": 20,
                                 "satisfiedFreeDays": ["FRI"],
-                                "courses": [
+                                "timetables": [
                                   {
                                     "courseId": 13,
                                     "courseName": "경영학원론",
                                     "credit": 3,
-                                    "category": "전공필수",
+                                    "lectureClassification": "전공필수",
                                     "lectureTime": [
                                       {
-                                        "day": "MON",
+                                        "dayOfWeek": "MON",
                                         "startTime": "09:00",
                                         "endTime": "10:15"
                                       },
                                       {
-                                        "day": "WED",
+                                        "dayOfWeek": "WED",
                                         "startTime": "09:00",
                                         "endTime": "10:15"
                                       }
@@ -80,10 +79,10 @@ public interface RecommendControllerDocs {
                                     "courseId": 17,
                                     "courseName": "경제학원론",
                                     "credit": 3,
-                                    "category": "전공선택",
+                                    "lectureClassification": "전공선택",
                                     "lectureTime": [
                                       {
-                                        "day": "WED",
+                                        "dayOfWeek": "WED",
                                         "startTime": "13:00",
                                         "endTime": "16:00"
                                       }

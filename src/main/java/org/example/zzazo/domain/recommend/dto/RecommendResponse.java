@@ -33,7 +33,7 @@ public class RecommendResponse {
             @Schema(description = "학점",example = "3")
             int credit,
             @Schema(description = "강의 분류 [전공필수,전공선택,교양필수,교양선택]",example = "전공필수")
-            LectureClassification category,
+            LectureClassification lectureClassification,
             @Schema(description = "강의시간")
             List<LectureTime> lectureTime
             ) {
@@ -45,7 +45,7 @@ public class RecommendResponse {
                 @JsonFormat(pattern = "HH:mm")
                 LocalTime endTime,
                 @Schema(description = "강의 요일",example = "MON")
-                Week week
+                Week dayOfWeek
         ) {
 
         }

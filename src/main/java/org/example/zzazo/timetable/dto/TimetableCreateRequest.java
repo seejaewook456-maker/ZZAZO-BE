@@ -2,11 +2,9 @@ package org.example.zzazo.timetable.dto;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.example.zzazo.global.common.Week;
@@ -43,20 +41,11 @@ public record TimetableCreateRequest(
         @NotNull
         Integer targetCredits,
 
-        @ArraySchema(schema = @Schema(description = "사용자가 선택한 필수 포함 강의 ID", example = "13"))
+        @ArraySchema(schema = @Schema(description = "저장할 시간표에 포함된 강의 ID", example = "13"))
         List<Long> selectedLectureIds,
 
         @Schema(description = "총 학점", example = "20")
         @NotNull
-        Integer totalCredits,
-
-        @Schema(description = "수강기준 점검 결과")
-        @Valid
-        @NotNull
-        RequirementCheckResponse requirementCheck,
-
-        @ArraySchema(schema = @Schema(implementation = TimetableCourseResponse.class))
-        @NotEmpty
-        List<@Valid TimetableCourseResponse> courses
+        Integer totalCredits
 ) {
 }

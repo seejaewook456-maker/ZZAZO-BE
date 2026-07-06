@@ -1,4 +1,4 @@
-package org.example.zzazo.timetable.controller.docs;
+package org.example.zzazo.domain.timetable.controller.docs;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -7,10 +7,10 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.zzazo.timetable.dto.TimetableCreateRequest;
-import org.example.zzazo.timetable.dto.TimetableCreateResponse;
-import org.example.zzazo.timetable.dto.TimetableDetailResponse;
-import org.example.zzazo.timetable.dto.TimetableListResponse;
+import org.example.zzazo.domain.timetable.dto.TimetableCreateRequest;
+import org.example.zzazo.domain.timetable.dto.TimetableCreateResponse;
+import org.example.zzazo.domain.timetable.dto.TimetableDetailResponse;
+import org.example.zzazo.domain.timetable.dto.TimetableListResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 

@@ -1,11 +1,11 @@
-package org.example.zzazo.timetable.controller;
+package org.example.zzazo.domain.timetable.controller;
 
 import jakarta.validation.Valid;
-import org.example.zzazo.timetable.controller.docs.TimetableControllerDocs;
-import org.example.zzazo.timetable.dto.TimetableCreateRequest;
-import org.example.zzazo.timetable.dto.TimetableCreateResponse;
-import org.example.zzazo.timetable.dto.TimetableDetailResponse;
-import org.example.zzazo.timetable.dto.TimetableListResponse;
+import org.example.zzazo.domain.timetable.controller.docs.TimetableControllerDocs;
+import org.example.zzazo.domain.timetable.dto.TimetableCreateRequest;
+import org.example.zzazo.domain.timetable.dto.TimetableCreateResponse;
+import org.example.zzazo.domain.timetable.dto.TimetableDetailResponse;
+import org.example.zzazo.domain.timetable.dto.TimetableListResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

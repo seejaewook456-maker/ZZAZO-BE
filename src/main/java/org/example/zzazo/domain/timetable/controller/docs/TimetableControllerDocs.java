@@ -50,8 +50,8 @@ public interface TimetableControllerDocs {
                     examples = @ExampleObject(value = """
                             {
                               "isSuccess": true,
-                              "code": "COMMON_200_1",
-                              "message": "요청 응답 성공",
+                              "code": "COMMON_201_1",
+                              "message": "요청 리소스 생성 성공",
                               "data": {
                                 "timetableId": 1,
                                 "message": "시간표가 저장되었습니다."
@@ -137,10 +137,19 @@ public interface TimetableControllerDocs {
                                     "professor": "홍길동",
                                     "credit": 3,
                                     "lectureClassification": "전공필수",
-                                    "dayOfWeek": "MON",
-                                    "startTime": "09:00",
-                                    "endTime": "10:15",
-                                    "classroom": "가천관 000호"
+                                    "classroom": "가천관 000호",
+                                    "lectureTime": [
+                                      {
+                                        "startTime": "10:30",
+                                        "endTime": "11:45",
+                                        "dayOfWeek": "MON"
+                                      },
+                                      {
+                                        "startTime": "10:30",
+                                        "endTime": "11:45",
+                                        "dayOfWeek": "WED"
+                                      }
+                                    ]
                                   }
                                 ]
                               }

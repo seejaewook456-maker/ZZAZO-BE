@@ -37,7 +37,8 @@ public interface RecommendControllerDocs {
                       "semester": 2,
                       "preferredFreeDays": [],
                       "targetCredits": 18,
-                      "selectedLectureIds": [13,17]
+                      "selectedLectureIds": [13,17],
+                      "priority": "FREE_PERIOD"
                     }
                     """))
     )
@@ -61,6 +62,8 @@ public interface RecommendControllerDocs {
                                     "lectureId": 13,
                                     "lectureName": "경영학원론",
                                     "credit": 3,
+                                    "professor": "홍길동",
+                                    "classroom": "가천관612",
                                     "lectureClassification": "전공필수",
                                     "lectureTime": [
                                       {
@@ -79,6 +82,8 @@ public interface RecommendControllerDocs {
                                     "lectureId": 17,
                                     "lectureName": "경제학원론",
                                     "credit": 3,
+                                    "professor": "홍길동",
+                                    "classroom": "가천관612",
                                     "lectureClassification": "전공선택",
                                     "lectureTime": [
                                       {
@@ -223,5 +228,5 @@ public interface RecommendControllerDocs {
             )
 
     })
-    ApiResponse<RecommendResponse.RecommendResult> recommendTimetable(RecommendRequest.createRecommend request);
+    ApiResponse<RecommendResponse.RecommendResult> recommendTimetable(RecommendRequest.createRecommendRequest request);
 }

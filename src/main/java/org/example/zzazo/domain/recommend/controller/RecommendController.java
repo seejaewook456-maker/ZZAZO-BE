@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecommendController implements RecommendControllerDocs {
 
     @PostMapping("/recommend")
-    public ApiResponse<RecommendResponse.RecommendResult> recommendTimetable(@RequestBody RecommendRequest.createRecommend request) {
+    public ApiResponse<RecommendResponse.RecommendResult> recommendTimetable(@RequestBody RecommendRequest.createRecommendRequest request) {
         return ApiResponse.success(BaseSuccessCode.GENERAL_OK);
     }
 }

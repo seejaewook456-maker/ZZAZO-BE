@@ -3,6 +3,7 @@ package org.example.zzazo.domain.lecture.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.example.zzazo.domain.lecture.domain.LectureClassification;
+import org.example.zzazo.domain.lecture.domain.LiberalCategory;
 import org.example.zzazo.global.common.Week;
 import java.time.LocalTime;
 import java.util.List;
@@ -42,5 +43,16 @@ public class LectureResponse {
             Week dayOfWeek
     ) {
 
+    }
+
+    @Schema(description = "교양 과목 세부구분 목록 조회 응답")
+    public record LiberalCategoryList(List<Category> liberalCategoryList) {
+        @Schema(description = "교양강의 세부 구분")
+        public record Category(
+
+                @Schema(description = "값", example = "COMMUNICATION")
+                LiberalCategory liberalCategory,
+                @Schema(description = "이름", example = "의사소통")
+                String name) {}
     }
 }

@@ -1,6 +1,11 @@
 package org.example.zzazo.domain.timetable.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.example.zzazo.global.common.Week;
+
+import java.time.LocalTime;
+import java.util.List;
 
 @Schema(description = "시간표에 포함된 과목 정보")
 public record TimetableCourseResponse(
@@ -22,18 +27,25 @@ public record TimetableCourseResponse(
         @Schema(description = "이수구분", example = "전공필수")
         String lectureClassification,
 
-        @Schema(description = "요일", example = "MON")
-        String dayOfWeek,
-
-        @Schema(description = "시작 시간", example = "09:00")
-        String startTime,
-
-        @Schema(description = "종료 시간", example = "10:15")
-        String endTime,
-
         @Schema(description = "강의실", example = "가천관 000호")
-        String classroom
+        String classroom,
+        @Schema(description = "강의시간")
+        List<LectureTime>lectureTime
 ) {
+    public record LectureTime(
+            @Schema(description = "시작 시간", example = "09:00")
+            @JsonFormat(pattern = "HH:mm")
+            LocalTime startTime,
+
+            @Schema(description = "종료 시간", example = "10:15")
+            @JsonFormat(pattern = "HH:mm")
+            LocalTime endTime,
+
+            @Schema(description = "요일", example = "MON")
+            Week dayOfWeek
+    ) {
+
+    }
 
     public static TimetableCourseResponse example() {
         return new TimetableCourseResponse(
@@ -43,10 +55,11 @@ public record TimetableCourseResponse(
                 "홍길동",
                 3,
                 "전공필수",
-                "MON",
-                "09:00",
-                "10:15",
-                "가천관 000호"
+                "가천관 000호",
+                List.of(
+                        new LectureTime(LocalTime.of(9, 0), LocalTime.of(10, 15), Week.MON),
+                        new LectureTime(LocalTime.of(10, 30), LocalTime.of(11, 45), Week.WED)
+                )
         );
     }
 }

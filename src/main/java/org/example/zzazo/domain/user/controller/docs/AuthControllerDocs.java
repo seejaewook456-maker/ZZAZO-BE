@@ -25,10 +25,12 @@ public interface AuthControllerDocs {
 
                     [회원가입 전체 흐름]
                     1단계 - 가천대학교 이메일 입력 후 인증번호 발송 (현재 API)
-                    2단계 - 이메일 인증번호 확인 (/api/auth/email/verify)
-                    3단계 - 나머지 정보 입력 후 최종 회원가입 (/api/auth/signup)
+                    2단계 - 이메일 인증번호 확인 (/api/v1/auth/email/verify)
+                    3단계 - 나머지 정보 입력 후 최종 회원가입 (/api/v1/auth/signup)
 
                     이 API만으로는 회원가입이 완료되지 않습니다.
+                    이미 가입된 이메일인 경우 인증번호가 발송되지 않습니다.
+                    이미 인증 요청 기록이 있는 이메일이면 새 인증번호와 만료 시간으로 갱신됩니다.
                     """
     )
     @RequestBody(
@@ -61,6 +63,18 @@ public interface AuthControllerDocs {
                               "isSuccess": false,
                               "code": "AUTH_400_1",
                               "message": "가천대학교 이메일(@gachon.ac.kr)만 사용할 수 있습니다.",
+                              "data": null
+                            }
+                            """))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "409",
+                    description = "이미 가입된 이메일",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
+                            {
+                              "isSuccess": false,
+                              "code": "AUTH_409_1",
+                              "message": "이미 존재하는 이메일입니다.",
                               "data": null
                             }
                             """))
@@ -102,15 +116,33 @@ public interface AuthControllerDocs {
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "400",
-                    description = "인증 실패 또는 잘못된 요청 (예: 인증번호 불일치)",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
-                            {
-                              "isSuccess": false,
-                              "code": "AUTH_400_2",
-                              "message": "인증번호가 일치하지 않습니다.",
-                              "data": null
-                            }
-                            """))
+                    description = "인증 실패 또는 잘못된 요청 (인증번호 불일치 / 인증 요청 기록 없음 / 인증번호 만료)",
+                    content = @Content(mediaType = "application/json", examples = {
+                            @ExampleObject(name = "인증번호 불일치", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_400_2",
+                                      "message": "인증번호가 일치하지 않습니다.",
+                                      "data": null
+                                    }
+                                    """),
+                            @ExampleObject(name = "인증 요청 기록 없음", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_400_5",
+                                      "message": "인증 요청 기록이 없습니다. 이메일 인증을 다시 요청해주세요.",
+                                      "data": null
+                                    }
+                                    """),
+                            @ExampleObject(name = "인증번호 만료", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_400_6",
+                                      "message": "인증번호가 만료되었습니다. 인증번호를 다시 요청해주세요.",
+                                      "data": null
+                                    }
+                                    """)
+                    })
             )
     })
     ResponseEntity<ApiResponse<Void>> verifyEmailCode(UserRequest.EmailVerificationConfirmRequest request);
@@ -161,15 +193,27 @@ public interface AuthControllerDocs {
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "400",
-                    description = "잘못된 요청 (입력값 검증 실패)",
-                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
-                            {
-                              "isSuccess": false,
-                              "code": "AUTH_400_3",
-                              "message": "입력값이 올바르지 않습니다.",
-                              "data": null
-                            }
-                            """))
+                    description = "잘못된 요청 (입력값 검증 실패 또는 학교 이메일 형식 오류)",
+                    content = @Content(mediaType = "application/json", examples = {
+                            @ExampleObject(name = "입력값 검증 실패", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "COMMON_400_2",
+                                      "message": "입력값이 올바르지 않습니다.",
+                                      "data": {
+                                        "password": "size must be between 8 and 20"
+                                      }
+                                    }
+                                    """),
+                            @ExampleObject(name = "학교 이메일 형식 오류", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_400_1",
+                                      "message": "가천대학교 이메일(@gachon.ac.kr)만 사용할 수 있습니다.",
+                                      "data": null
+                                    }
+                                    """)
+                    })
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "403",

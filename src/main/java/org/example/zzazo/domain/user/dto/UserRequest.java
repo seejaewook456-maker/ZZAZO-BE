@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 // user 도메인 Request DTO 모음
@@ -20,10 +19,6 @@ public class UserRequest {
             )
             @NotBlank
             @Email
-            @Pattern(
-                    regexp = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@gachon\\.ac\\.kr$",
-                    message = "가천대학교 이메일(@gachon.ac.kr)만 사용할 수 있습니다."
-            )
             String email
     ) {
     }
@@ -58,10 +53,6 @@ public class UserRequest {
             )
             @NotBlank
             @Email
-            @Pattern(
-                    regexp = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@gachon\\.ac\\.kr$",
-                    message = "가천대학교 이메일(@gachon.ac.kr)만 사용할 수 있습니다."
-            )
             String email,
 
             @Schema(example = "password123!")

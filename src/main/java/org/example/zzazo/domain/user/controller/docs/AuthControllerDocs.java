@@ -12,7 +12,7 @@ import org.example.zzazo.global.common.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
 // Auth 관련 API의 Swagger 문서 정의
-@Tag(name = "Auth", description = "인증 API (이메일 인증, 회원가입, 로그인, 로그아웃)")
+@Tag(name = "Auth", description = "인증 API (이메일 인증, 회원가입, 로그인, 로그아웃, 토큰 재발급)")
 public interface AuthControllerDocs {
 
     @Operation(
@@ -398,4 +398,96 @@ public interface AuthControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<Void>> logout(UserRequest.LogoutRequest request);
+
+    @Operation(
+            summary = "토큰 재발급",
+            description = """
+                    클라이언트가 보유한 refreshToken으로 새로운 accessToken과 refreshToken을 재발급합니다.
+
+                    서버는 전달받은 refreshToken의 서명과 만료 여부를 검증하고, DB에 저장된 refreshToken과 일치하는지 확인한 뒤
+                    토큰에 해당하는 사용자가 실제로 존재하는지 확인합니다.
+                    검증에 성공하면 새로운 accessToken과 refreshToken을 발급하며(RefreshToken Rotation),
+                    기존 refreshToken은 새 값으로 교체되어 더 이상 사용할 수 없습니다.
+                    """
+    )
+    @RequestBody(
+            required = true,
+            description = "재발급에 사용할 refreshToken",
+            content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
+                    {
+                      "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.refreshTokenExample"
+                    }
+                    """))
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "재발급 성공",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
+                            {
+                              "isSuccess": true,
+                              "code": "COMMON_200_1",
+                              "message": "요청 응답 성공",
+                              "data": {
+                                "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.newAccessTokenExample",
+                                "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.newRefreshTokenExample",
+                                "tokenType": "Bearer"
+                              }
+                            }
+                            """))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청 (refreshToken 누락)",
+                    content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
+                            {
+                              "isSuccess": false,
+                              "code": "COMMON_400_2",
+                              "message": "입력값이 올바르지 않습니다.",
+                              "data": {
+                                "refreshToken": "공백일 수 없습니다"
+                              }
+                            }
+                            """))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "401",
+                    description = "유효하지 않은 refreshToken (만료 / 위조·파싱 실패 / DB에 존재하지 않음 / 사용자 없음)",
+                    content = @Content(mediaType = "application/json", examples = {
+                            @ExampleObject(name = "만료된 refreshToken", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_401_2",
+                                      "message": "리프레시 토큰이 만료되었습니다.",
+                                      "data": null
+                                    }
+                                    """),
+                            @ExampleObject(name = "위조되었거나 파싱할 수 없는 refreshToken", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_401_3",
+                                      "message": "유효하지 않은 리프레시 토큰입니다.",
+                                      "data": null
+                                    }
+                                    """),
+                            @ExampleObject(name = "DB에 존재하지 않는 refreshToken (이미 로그아웃되었거나 이전에 재발급으로 교체됨)", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_401_4",
+                                      "message": "이미 로그아웃되었거나 존재하지 않는 리프레시 토큰입니다.",
+                                      "data": null
+                                    }
+                                    """),
+                            @ExampleObject(name = "토큰에 해당하는 사용자 없음", value = """
+                                    {
+                                      "isSuccess": false,
+                                      "code": "AUTH_401_5",
+                                      "message": "토큰에 해당하는 사용자를 찾을 수 없습니다.",
+                                      "data": null
+                                    }
+                                    """)
+                    })
+            )
+    })
+    ResponseEntity<ApiResponse<UserResponse.TokenReissueResponse>> refresh(UserRequest.RefreshRequest request);
 }

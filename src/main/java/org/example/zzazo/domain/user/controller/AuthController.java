@@ -67,4 +67,13 @@ public class AuthController implements AuthControllerDocs {
         authService.logout(request.refreshToken());
         return ResponseEntity.ok(ApiResponse.success(BaseSuccessCode.GENERAL_OK));
     }
+
+    // 토큰 재발급
+    @Override
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<UserResponse.TokenReissueResponse>> refresh(
+            @Valid @RequestBody UserRequest.RefreshRequest request) {
+        UserResponse.TokenReissueResponse response = authService.reissueToken(request.refreshToken());
+        return ResponseEntity.ok(ApiResponse.success(BaseSuccessCode.GENERAL_OK, response));
+    }
 }

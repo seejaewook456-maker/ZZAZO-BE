@@ -88,4 +88,12 @@ public class UserRequest {
             String refreshToken
     ) {
     }
+
+    // 토큰 재발급 요청 정보
+    public record RefreshRequest(
+            @Schema(example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.refreshTokenExample")
+            @NotBlank
+            String refreshToken
+    ) {
+    }
 }

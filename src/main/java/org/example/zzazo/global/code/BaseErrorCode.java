@@ -26,7 +26,8 @@ public enum BaseErrorCode implements BaseCode {
     LOGIN_FAILED(HttpStatus.UNAUTHORIZED,"AUTH_401_1","이메일 또는 비밀번호가 일치하지 않습니다."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED,"AUTH_401_2","리프레시 토큰이 만료되었습니다."),
     REFRESH_TOKEN_INVALID(HttpStatus.UNAUTHORIZED,"AUTH_401_3","유효하지 않은 리프레시 토큰입니다."),
-    REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED,"AUTH_401_4","이미 로그아웃되었거나 존재하지 않는 리프레시 토큰입니다.");
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED,"AUTH_401_4","이미 로그아웃되었거나 존재하지 않는 리프레시 토큰입니다."),
+    TOKEN_USER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"AUTH_401_5","토큰에 해당하는 사용자를 찾을 수 없습니다.");
 
 
     private final HttpStatus status;

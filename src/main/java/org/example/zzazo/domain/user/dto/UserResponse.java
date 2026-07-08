@@ -23,6 +23,20 @@ public class UserResponse {
     ) {
     }
 
+    // 토큰 재발급 응답 정보
+    @Builder
+    public record TokenReissueResponse(
+            @Schema(example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.accessTokenExample")
+            String accessToken,
+
+            @Schema(example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.refreshTokenExample")
+            String refreshToken,
+
+            @Schema(example = "Bearer")
+            String tokenType
+    ) {
+    }
+
     // 회원가입 응답 정보
     @Builder
     public record SignUpResponse(

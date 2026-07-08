@@ -1,5 +1,6 @@
 package org.example.zzazo.domain.user.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
@@ -174,6 +175,40 @@ public class AuthService {
                 .orElseThrow(() -> new CustomException(BaseErrorCode.REFRESH_TOKEN_NOT_FOUND));
 
         refreshTokenRepository.delete(refreshTokenEntity);
+    }
+
+    // 토큰 재발급 (RefreshToken Rotation)
+    @Transactional
+    public UserResponse.TokenReissueResponse reissueToken(String refreshToken) {
+        Claims claims;
+        try {
+            claims = jwtProvider.parseClaims(refreshToken);
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(BaseErrorCode.REFRESH_TOKEN_EXPIRED);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new CustomException(BaseErrorCode.REFRESH_TOKEN_INVALID);
+        }
+
+        RefreshToken refreshTokenEntity = refreshTokenRepository.findByToken(refreshToken)
+                .orElseThrow(() -> new CustomException(BaseErrorCode.REFRESH_TOKEN_NOT_FOUND));
+
+        Long userId = Long.parseLong(claims.getSubject());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(BaseErrorCode.TOKEN_USER_NOT_FOUND));
+
+        String newAccessToken = jwtProvider.createAccessToken(user.getUserId(), user.getEmail());
+        String newRefreshToken = jwtProvider.createRefreshToken(user.getUserId());
+        LocalDateTime newRefreshTokenExpiredAt = LocalDateTime.now()
+                .plusSeconds(jwtProvider.getRefreshTokenExpiration() / 1000);
+
+        refreshTokenEntity.renew(newRefreshToken, newRefreshTokenExpiredAt);
+        refreshTokenRepository.save(refreshTokenEntity);
+
+        return UserResponse.TokenReissueResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .tokenType("Bearer")
+                .build();
     }
 
     private void validateSchoolEmail(String email) {

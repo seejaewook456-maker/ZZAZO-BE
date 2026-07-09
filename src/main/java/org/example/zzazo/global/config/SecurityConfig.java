@@ -27,7 +27,9 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**",
                                 "/api/health",
-                                "/api/auth/**"
+                                "/api/auth/**",
+                                //테스트용 접근 권한 허용 -> Auth 로직 구현 완료시 삭제
+                                "/api/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );

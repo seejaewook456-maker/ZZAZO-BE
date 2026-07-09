@@ -82,6 +82,7 @@ public class AuthService {
         }
 
         if (emailVerification.isExpired()) {
+            emailVerificationRepository.delete(emailVerification);
             throw new CustomException(AuthErrorCode.VERIFICATION_CODE_EXPIRED);
         }
 
@@ -114,6 +115,9 @@ public class AuthService {
                 .build();
 
         User savedUser = userRepository.save(user);
+
+        // 회원가입이 완료된 이메일의 인증 기록은 더 이상 필요 없으므로 삭제한다.
+        emailVerificationRepository.delete(emailVerification);
 
         return UserResponse.SignUpResponse.builder()
                 .userId(savedUser.getUserId())
@@ -180,6 +184,8 @@ public class AuthService {
         try {
             claims = jwtProvider.parseClaims(refreshToken);
         } catch (ExpiredJwtException e) {
+            // 만료된 리프레시 토큰은 재발급에 사용할 수 없으므로 저장된 기록도 함께 삭제한다.
+            refreshTokenRepository.findByToken(refreshToken).ifPresent(refreshTokenRepository::delete);
             throw new CustomException(AuthErrorCode.REFRESH_TOKEN_EXPIRED);
         } catch (JwtException | IllegalArgumentException e) {
             throw new CustomException(AuthErrorCode.REFRESH_TOKEN_INVALID);

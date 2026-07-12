@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import org.example.zzazo.global.common.Week;
 
@@ -39,6 +40,7 @@ public record TimetableCreateRequest(
 
         @Schema(description = "목표 학점", example = "18")
         @NotNull
+        @PositiveOrZero
         Integer targetCredits,
 
         @ArraySchema(schema = @Schema(description = "저장할 시간표에 포함된 강의 ID", example = "13"))
@@ -46,6 +48,7 @@ public record TimetableCreateRequest(
 
         @Schema(description = "총 학점", example = "20")
         @NotNull
+        @PositiveOrZero
         Integer totalCredits
 ) {
 }

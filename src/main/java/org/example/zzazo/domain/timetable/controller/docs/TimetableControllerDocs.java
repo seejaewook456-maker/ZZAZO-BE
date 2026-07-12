@@ -62,7 +62,7 @@ public interface TimetableControllerDocs {
     )
     @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content)
     @ApiResponse(responseCode = "401", description = "인증 필요", content = @Content)
-    ResponseEntity<TimetableCreateResponse> createTimetable(TimetableCreateRequest request);
+    ResponseEntity<org.example.zzazo.global.common.ApiResponse<TimetableCreateResponse>> createTimetable(TimetableCreateRequest request);
 
     @Operation(
             summary = "저장한 시간표 목록 조회",

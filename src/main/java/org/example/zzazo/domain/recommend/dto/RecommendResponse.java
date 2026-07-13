@@ -18,10 +18,10 @@ public class RecommendResponse {
             @Schema(description = "추천 시간표의 총 학점", example = "18")
             int totalCredits,
             @Schema(
-                    description = "추천 결과 시간표 공강 요일",
+                    description = "희망 하는 공강 요일",
                     example = "[\"FRI\"]"
             )
-            List<Week> satisfiedFreeDays,
+            List<Week> preferredFreeDays,
             @Schema(description = "추천 시간표의 강의 목록")
             List<Lecture> timetables
     ) {

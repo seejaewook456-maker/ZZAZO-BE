@@ -57,5 +57,4 @@ public class Lecture {
     private List<LectureSchedule> lectureSchedules = new ArrayList<>();
 
 
-
 }

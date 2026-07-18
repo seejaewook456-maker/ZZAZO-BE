@@ -1,6 +1,7 @@
 package org.example.zzazo.domain.timetable.service;
 
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.example.zzazo.domain.timetable.dto.TimetableCreateRequest;
 import org.example.zzazo.domain.timetable.dto.TimetableCreateResponse;
 import org.example.zzazo.domain.timetable.entity.Lecture;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class TimetableService {
 
     private static final long TEMPORARY_USER_ID = 1L;
@@ -30,18 +32,6 @@ public class TimetableService {
     private final LectureRepository lectureRepository;
     private final TimetableLectureRepository timetableLectureRepository;
     private final EntityManager entityManager;
-
-    public TimetableService(
-            TimetableRepository timetableRepository,
-            LectureRepository lectureRepository,
-            TimetableLectureRepository timetableLectureRepository,
-            EntityManager entityManager
-    ) {
-        this.timetableRepository = timetableRepository;
-        this.lectureRepository = lectureRepository;
-        this.timetableLectureRepository = timetableLectureRepository;
-        this.entityManager = entityManager;
-    }
 
     @Transactional
     public TimetableCreateResponse createTimetable(TimetableCreateRequest request) {

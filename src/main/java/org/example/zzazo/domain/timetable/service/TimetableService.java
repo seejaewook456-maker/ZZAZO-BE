@@ -2,15 +2,19 @@ package org.example.zzazo.domain.timetable.service;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.example.zzazo.domain.lecture.entity.Lecture;
+import org.example.zzazo.domain.lecture.repository.LectureRepository;
 import org.example.zzazo.domain.timetable.dto.TimetableCreateRequest;
 import org.example.zzazo.domain.timetable.dto.TimetableCreateResponse;
-import org.example.zzazo.domain.timetable.entity.Lecture;
+import org.example.zzazo.domain.timetable.dto.TimetableListResponse;
 import org.example.zzazo.domain.timetable.entity.Timetable;
 import org.example.zzazo.domain.timetable.entity.TimetableLecture;
-import org.example.zzazo.domain.timetable.repository.LectureRepository;
 import org.example.zzazo.domain.timetable.repository.TimetableLectureRepository;
 import org.example.zzazo.domain.timetable.repository.TimetableRepository;
 import org.example.zzazo.domain.user.entity.User;
+import org.example.zzazo.domain.user.exception.AuthErrorCode;
+import org.example.zzazo.domain.user.security.CustomUserDetails;
+import org.example.zzazo.global.error.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +29,6 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class TimetableService {
-
-    private static final long TEMPORARY_USER_ID = 1L;
 
     private final TimetableRepository timetableRepository;
     private final LectureRepository lectureRepository;
@@ -58,6 +60,15 @@ public class TimetableService {
         return new TimetableCreateResponse(savedTimetable.getTimetableId(), "시간표가 저장되었습니다.");
     }
 
+    @Transactional(readOnly = true)
+    public TimetableListResponse getTimetables() {
+        List<Timetable> timetables = timetableRepository.findAllByUser_UserIdAndDeletedAtIsNullOrderByCreatedAtDesc(
+                getCurrentUserId()
+        );
+
+        return TimetableListResponse.from(timetables);
+    }
+
     private List<Lecture> findSelectedLectures(List<Long> selectedLectureIds) {
         if (selectedLectureIds == null || selectedLectureIds.isEmpty()) {
             return List.of();
@@ -74,14 +85,10 @@ public class TimetableService {
 
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.getName() == null || "anonymousUser".equals(authentication.getName())) {
-            return TEMPORARY_USER_ID;
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails userDetails)) {
+            throw new CustomException(AuthErrorCode.TOKEN_USER_NOT_FOUND);
         }
 
-        try {
-            return Long.parseLong(authentication.getName());
-        } catch (NumberFormatException e) {
-            return TEMPORARY_USER_ID;
-        }
+        return userDetails.getUserId();
     }
 }

@@ -40,10 +40,6 @@ public class SecurityConfig {
                                 "/v3/api-docs.yaml",
                                 "/swagger-resources/**",
                                 "/webjars/**",
-                                "/api/health",
-                                "/api/auth/**",
-                                //테스트용 접근 권한 허용 -> Auth 로직 구현 완료시 삭제
-                                "/api/**",
                                 "/api/v1/health",
                                 "/api/v1/auth/**"
                         ).permitAll()
